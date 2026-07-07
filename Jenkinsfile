@@ -4,7 +4,6 @@ pipeline {
 
     environment {
         IMAGE_NAME = "task-tracker"
-        CONTAINER_NAME = "task-tracker"
         APP_PORT = "3000"
     }
 
@@ -18,14 +17,21 @@ pipeline {
 
         stage('Install Dependencies and Run Tests') {
             steps {
-                sh 'npm install'
-                sh 'npm test'
+                sh '''
+                docker run --rm \
+                    -v "$WORKSPACE":/app \
+                    -w /app \
+                    node:20-alpine \
+                    sh -c "npm install && npm test"
+                '''
             }
         }
 
         stage('Build') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                sh '''
+                docker build -t ${IMAGE_NAME} .
+                '''
             }
         }
 
@@ -48,27 +54,22 @@ pipeline {
                 echo "GET /"
                 curl http://localhost:${APP_PORT}/
 
-                echo ""
+                echo
                 echo "==============================="
                 echo "GET /health"
                 curl http://localhost:${APP_PORT}/health
 
-                echo ""
+                echo
                 echo "==============================="
                 echo "GET /api/tasks"
                 curl http://localhost:${APP_PORT}/api/tasks
-
-                echo ""
                 '''
             }
         }
-
     }
 
     post {
-
         always {
-
             echo "Cleaning up..."
 
             sh '''
@@ -79,5 +80,4 @@ pipeline {
             cleanWs()
         }
     }
-
 }
