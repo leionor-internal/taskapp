@@ -9,9 +9,9 @@ pipeline {
 
         IMAGE_TAG = "${BUILD_NUMBER}"
 
-        DOCKER_IMAGE = "${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+        DOCKER_IMAGE = "${IMAGE_NAME}:${IMAGE_TAG}"
 
-        PREVIOUS_IMAGE = "${REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER.toInteger()-1}"
+        PREVIOUS_IMAGE = "${IMAGE_NAME}:${BUILD_NUMBER.toInteger()-1}"
 
         APP_PORT = "3000"
 
