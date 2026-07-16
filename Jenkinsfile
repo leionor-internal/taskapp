@@ -4,7 +4,7 @@ pipeline {
 
     environment {
 
-        REGISTRY = "registry.example.com"
+        REGISTRY = "likithus"
         IMAGE_NAME = "task-tracker"
 
         IMAGE_TAG = "${BUILD_NUMBER}"
@@ -15,7 +15,7 @@ pipeline {
 
         APP_PORT = "3000"
 
-        EMAIL = "admin@example.com"
+        EMAIL = "workpersonaladi@gmail.com"
 
     }
 
@@ -61,14 +61,14 @@ pipeline {
 
                 withCredentials([
                     usernamePassword(
-                        credentialsId: 'docker-registry',
-                        usernameVariable: 'USERNAME',
-                        passwordVariable: 'PASSWORD'
+                        credentialsId: 'dockerhub-creds',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
                     )
                 ]) {
 
                     sh '''
-                    echo "$PASSWORD" | docker login $REGISTRY -u "$USERNAME" --password-stdin
+                    echo "$DOCKER_PASS" | docker login $REGISTRY -u "$DOCKER_USER" --password-stdin
                     '''
 
                 }
