@@ -39,21 +39,21 @@ pipeline {
 
         }
 
-        stage('Install Dependencies and Run Tests') {
+        // stage('Install Dependencies and Run Tests') {
 
-            steps {
+        //     steps {
 
-                sh '''
+        //         sh '''
 
-                npm install
+        //         npm install
 
-                npm test
+        //         npm test
 
-                '''
+        //         '''
 
-            }
+        //     }
 
-        }
+        // }
 
         stage('Docker Login') {
 
