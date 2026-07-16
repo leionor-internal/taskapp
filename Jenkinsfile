@@ -4,7 +4,7 @@ pipeline {
 
     environment {
 
-        REGISTRY = "likithus"
+        // REGISTRY = "likithus"
         IMAGE_NAME = "task-tracker"
 
         IMAGE_TAG = "${BUILD_NUMBER}"
@@ -68,7 +68,7 @@ pipeline {
                 ]) {
 
                     sh '''
-                    echo "$DOCKER_PASS" | docker login $REGISTRY -u "$DOCKER_USER" --password-stdin
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                     '''
 
                 }
@@ -79,38 +79,38 @@ pipeline {
 
         stage('Build Image') {
 
-            steps {
+    steps {
 
-                sh '''
+        sh '''
 
-                export DOCKER_BUILDKIT=1
+        export DOCKER_BUILDKIT=1
 
-                docker build \
-                    --cache-from=${REGISTRY}/${IMAGE_NAME}:latest \
-                    -t ${DOCKER_IMAGE} \
-                    -t ${REGISTRY}/${IMAGE_NAME}:latest .
+        docker build \
+            --cache-from=${IMAGE_NAME}:latest \
+            -t ${DOCKER_IMAGE} \
+            -t ${IMAGE_NAME}:latest .
 
-                '''
+        '''
 
-            }
+    }
 
-        }
+}
 
         stage('Push Image') {
 
-            steps {
+    steps {
 
-                sh '''
+        sh '''
 
-                docker push ${DOCKER_IMAGE}
+        docker push ${DOCKER_IMAGE}
 
-                docker push ${REGISTRY}/${IMAGE_NAME}:latest
+        docker push ${IMAGE_NAME}:latest
 
-                '''
+        '''
 
-            }
+    }
 
-        }
+}
 
         stage('Deploy') {
 
