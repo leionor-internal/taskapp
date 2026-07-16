@@ -5,7 +5,7 @@ pipeline {
     environment {
 
         // REGISTRY = "likithus"
-        IMAGE_NAME = "task-tracker"
+        IMAGE_NAME = "likithus/task-tracker"
 
         IMAGE_TAG = "${BUILD_NUMBER}"
 
